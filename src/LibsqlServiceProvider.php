@@ -2,8 +2,6 @@
 
 declare(strict_types=1);
 
-declare(strict_types=1);
-
 namespace Libsql\Laravel;
 
 use Libsql\Laravel\Vector\VectorMacro;

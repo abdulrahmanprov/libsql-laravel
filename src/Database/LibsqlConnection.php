@@ -167,7 +167,8 @@ class LibsqlConnection extends Connection
             $this->recordsHaveBeenModified(($count = $statement->rowCount()) > 0);
 
             return $count;
-     });
+        });
+    }
 
     #[\ReturnTypeWillChange]
     protected function getDefaultSchemaGrammar(): LibsqlSchemaGrammar

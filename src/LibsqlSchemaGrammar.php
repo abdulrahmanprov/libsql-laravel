@@ -15,6 +15,6 @@ class LibsqlSchemaGrammar extends SQLiteGrammar
             return "F32_BLOB({$column->dimensions})";
         }
 
-        throw new RuntimeException('Dimension must be set for vector embedding');
+        throw new \RuntimeException('Dimension must be set for vector embedding');
     }
 }
