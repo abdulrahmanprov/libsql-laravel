@@ -95,12 +95,13 @@ class LibsqlConnection extends Connection
 
     public function selectOne($query, $bindings = [], $useReadPdo = true)
     {
+        // Laravel 13 يتوقع 3 معاملات هنا (fetchUsing غير مطلوب في selectOne)
         $records = $this->select($query, $bindings, $useReadPdo);
 
         return array_shift($records);
     }
 
-    public function select($query, $bindings = [], $useReadPdo = true)
+    public function select($query, $bindings = [], $useReadPdo = true, array $fetchUsing = [])
     {
         $bindings = array_map(function ($binding) {
             return is_bool($binding) ? (int) $binding : $binding;
@@ -158,7 +159,7 @@ class LibsqlConnection extends Connection
 
             foreach ($bindings as $key => $value) {
                 $type = is_resource($value) ? \PDO::PARAM_LOB : \PDO::PARAM_STR;
-                $statement->bindValue($key, $value, $type);
+                $statement->bindValue(is_int($key) ? $key + 1 : $key, $value, $type);
             }
 
             $statement->execute();
@@ -166,8 +167,7 @@ class LibsqlConnection extends Connection
             $this->recordsHaveBeenModified(($count = $statement->rowCount()) > 0);
 
             return $count;
-        });
-    }
+     });
 
     #[\ReturnTypeWillChange]
     protected function getDefaultSchemaGrammar(): LibsqlSchemaGrammar
